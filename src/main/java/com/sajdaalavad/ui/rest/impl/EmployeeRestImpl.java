@@ -1,28 +1,9 @@
-package com.sajdaalavad.ui.rest.impl;
+/*package com.sajdaalavad.ui.rest.impl;
 
 
-import com.sajdaalavad.business.dto.EmployeeDto;
-import com.sajdaalavad.business.services.IEmployeeServices;
-import com.sajdaalavad.ui.rest.IEmployeeRest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 //dünyaya acilacak kapimiz (React;) bu kisimda iliskilendirecegiz.
 
-@RestController
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/v1")
-public class EmployeeRestImpl implements IEmployeeRest {
-    @Autowired
-    IEmployeeServices services;
-
-    @GetMapping("/index")
-    public String getRoot(){
-        return "index";
     }
 
     //Save
@@ -69,5 +50,5 @@ public class EmployeeRestImpl implements IEmployeeRest {
         Map<String,Boolean> response= new HashMap<>();
         response.put("silindi",Boolean.TRUE);
         return ResponseEntity.ok(response);
-    }
-}
+   } }*/
+

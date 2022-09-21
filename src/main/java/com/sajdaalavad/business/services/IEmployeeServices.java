@@ -1,3 +1,4 @@
+/*
 package com.sajdaalavad.business.services;
 
 import com.sajdaalavad.business.dto.EmployeeDto;
@@ -31,4 +32,5 @@ public interface IEmployeeServices {
 
 }
 
+*/
 //Dto'dan entitye cevrecek ... entityden dtoya cevreyecek

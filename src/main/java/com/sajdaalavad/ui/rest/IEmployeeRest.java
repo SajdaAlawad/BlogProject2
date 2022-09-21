@@ -1,4 +1,4 @@
-package com.sajdaalavad.ui.rest;
+/*package com.sajdaalavad.ui.rest;
 
 import com.sajdaalavad.business.dto.EmployeeDto;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +23,4 @@ public interface IEmployeeRest {
     //delete
     ResponseEntity<Map<String,Boolean>> deleteEmployee(Long id);
 
-}
+}*/

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
+//AuditorAwareimpl sayfada olusturdugumuz implement ekliyoruz
 @Configuration
 public class AuditorAwareBean {
     @Bean
@@ -14,4 +15,3 @@ public class AuditorAwareBean {
 }
 
 
-//AuditorAwareimpl sayfada olusturdugumuz implement ekliyoruz

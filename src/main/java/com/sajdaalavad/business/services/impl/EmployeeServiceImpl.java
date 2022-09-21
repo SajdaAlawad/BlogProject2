@@ -1,113 +1,68 @@
 package com.sajdaalavad.business.services.impl;
 
-import ch.qos.logback.core.spi.PreSerializationTransformer;
-import com.sajdaalavad.business.dto.EmployeeDto;
-import com.sajdaalavad.business.services.IEmployeeServices;
+
 import com.sajdaalavad.data.entity.EmployeeEntity;
 import com.sajdaalavad.data.repository.EmployeeRepository;
 import com.sajdaalavad.exception.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
+import javax.transaction.Transactional;
 
-import javax.print.attribute.standard.PresentationDirection;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 @Service
 @Log4j2
-public class EmployeeServiceImpl implements IEmployeeServices {
+public class EmployeeServiceImpl {
 
+    public final EmployeeRepository employeeRepository;
     @Autowired
-    EmployeeRepository repository;
-    @Autowired
-    ModelMapper modelMapper;
-
-    //modelMapper
-    @Override
-    public EmployeeDto EntityTODto(EmployeeEntity employeeEntity) {
-        EmployeeDto employeeDto=modelMapper.map(employeeEntity,EmployeeDto.class);
-        return employeeDto;
-    }
-    @Override
-    public EmployeeEntity DtotoEntity(EmployeeDto employeeDto) {
-        EmployeeEntity entity=modelMapper.map(employeeDto,EmployeeEntity.class);
-        return entity;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository){
+        this.employeeRepository= employeeRepository;
     }
 
-    //Save
-    // http://localhost:8080/save/employees
-    @Override
-    @PostMapping("/save/employees")
-    public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
-        //Dtodaki verileri entity ye cevirdik
-        EmployeeEntity entity=DtotoEntity(employeeDto);
-        repository.save(entity);
-        log.info("Ekleme Basarili");
-        return employeeDto;
-    }
-    //List
-    // http://localhost:8080/list/employees
-    @Override
-    @GetMapping("/list/employees")
-    public List<EmployeeDto> getAllEmployee() {
-        //Bütün dosyalar listemyle listesin
-        List<EmployeeDto> list=new ArrayList<>();
-        Iterable<EmployeeEntity> listem=repository.findAll();
-        for(EmployeeEntity entity : listem){
-            EmployeeDto employeeDto= EntityTODto(entity);
-            list.add(employeeDto);
-        }
-        return list;
+    public EmployeeEntity addEmployee(EmployeeEntity employeeEntity){
+        return employeeRepository.save(employeeEntity);
     }
 
-    //find
-    // http://localhost:8080/list/employees
-    @Override
-    @GetMapping("/find/employees/{id}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(name="id") Long id) {
-        EmployeeEntity employeeEntity= repository.findById(id)
-                .orElseThrow( ()->new ResourceNotFoundException("Employee "+id+"id bulunmadii"));
-        EmployeeDto employeeDto=EntityTODto(employeeEntity);
-        return ResponseEntity.ok(employeeDto);
+    public List<EmployeeEntity> getEmployee(){
+        return StreamSupport.stream(employeeRepository.findAll().spliterator(),false)
+                .collect(Collectors.toList());
     }
-    //update
-    @Override
-    @PutMapping("/update/employees/{id}")
-    public ResponseEntity<EmployeeDto> updateEmployee(@PathVariable(name="id") Long id,@RequestBody EmployeeDto employeeDto) {
-        //DtoEntity
-        EmployeeEntity employeeEntity=DtotoEntity(employeeDto);
-
-        EmployeeEntity employeeFind=repository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("Employee"+"id bulunmadii"));
-
-        //setEntity
-        employeeFind.setEmployeeName(employeeEntity.getEmployeeName());
-        employeeFind.setEmployeeEmail(employeeEntity.getEmployeeEmail());
-
-        EmployeeEntity employeeEntity2= repository.save(employeeFind);
-
-        //EntityToDto
-        EmployeeDto employeeDto2= EntityTODto(employeeEntity2);
-        return ResponseEntity.ok(employeeDto2);
+    public EmployeeEntity getEmployee(Long id){
+        return employeeRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(id));
+    }
+    public EmployeeEntity deleteEmployee(Long id){
+        EmployeeEntity employeeEntity=getEmployee(id);
+        employeeRepository.delete(employeeEntity);
+        return employeeEntity;
     }
 
-    //Delete
-    @Override
-    @DeleteMapping("/delete/employees/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable(name="id") Long id) {
-        EmployeeEntity employeeEntity=repository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("Employee"+id+"id bulunmadii"));
-
-        repository.delete(employeeEntity);
-        Map<String, Boolean> response=new HashMap<>();
-        response.put("silindi",Boolean.TRUE);
-        return ResponseEntity.ok(response);
+    @Transactional
+    public EmployeeEntity editEmployee(Long id , EmployeeEntity employeeEntity){
+        EmployeeEntity employeeToEdit=getEmployee(id);
+        employeeToEdit.setEmployeeName(employeeEntity.getEmployeeName());
+        employeeToEdit.setEmployeeage(employeeEntity.getEmployeeage());
+        employeeToEdit.setEmployeesalary(employeeEntity.getEmployeesalary());
+        employeeToEdit.setEmployeeworkingyear(employeeEntity.getEmployeeworkingyear());
+        return employeeToEdit;
     }
+
+    public EmployeeEntity SalaryCalu(EmployeeEntity employeeEntity){
+        employeeEntity.setEmployeeage(employeeEntity.getEmployeeage());
+        employeeEntity.setEmployeesalary(employeeEntity.getEmployeesalary());
+        employeeEntity.setEmployeeworkingyear(employeeEntity.getEmployeeworkingyear());
+        employeeEntity.Bonus();
+        return employeeEntity;
+    }
+    public EmployeeEntity salary(EmployeeEntity employeeEntity){
+        employeeEntity.setEmployeesalary(employeeEntity.getEmployeesalary());
+        employeeEntity.setEmployeeworkingyear(employeeEntity.getEmployeeworkingyear());
+        return employeeEntity;
+    }
+
 }

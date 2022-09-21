@@ -34,17 +34,17 @@ import static org.junit.jupiter.api.Assertions.*;
 */
 
 
-@Log4j2
+
 @SpringBootTest
-class EcodationBlogProject2ApplicationTests implements ITestData {
-    @Autowired
+class EcodationBlogProject2ApplicationTests {
+   /* @Autowired
     EmployeeRepository repository;
 
     @Override
     @Test
     public void testCreated() {
         EmployeeEntity employeeEntity=EmployeeEntity.builder().employeeName("Hamit")
-                .employeeEmail("hamitmizrak@gmail.com").build();
+                .employeeEmail("hamitmizrak@gmail.com").employeeage("34").build();
         repository.save(employeeEntity);
 
         //database eklenecek ilk data 1 datadır
@@ -83,6 +83,8 @@ class EcodationBlogProject2ApplicationTests implements ITestData {
         assertThat(repository.existsById(1L)).isFalse();
     }
 
+    buraya kadar
+*/
 
 
   /*  @Autowired
