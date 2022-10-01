@@ -28,19 +28,19 @@ public class CompanyServices {
 
 
 
-    public static companyEntity addCompany(companyEntity companyEntity){
+    public companyEntity addCompany(companyEntity companyEntity){
+          return companyRepository.save(companyEntity);
 
-        return CompanyRepository.save(companyEntity);
     }
 
-    public List<companyEntity> getCompany(){
+    public List<companyEntity> getCompanies(){
         return StreamSupport
                 .stream(companyRepository.findAll().spliterator(),false)
                 .collect(Collectors.toList());
     }
 
     public companyEntity getCompany(Long id){
-        return companyRepository.findAllById(id).orElseThrow(() ->
+        return companyRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(id));
     }
 

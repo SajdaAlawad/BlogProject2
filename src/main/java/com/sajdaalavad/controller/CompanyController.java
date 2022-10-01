@@ -1,6 +1,9 @@
 package com.sajdaalavad.controller;
 
 
+//import com.codeforgeyt.onetomanywebservice.service.CartService;
+//import com.codeforgeyt.onetomanywebservice.model.dto.CartDto;
+
 import com.sajdaalavad.business.dto.CompanyDto;
 import com.sajdaalavad.business.services.CompanyServices;
 import com.sajdaalavad.data.entity.companyEntity;
@@ -26,14 +29,15 @@ public class CompanyController {
 
    @PostMapping
     public ResponseEntity<CompanyDto> addCompany(@RequestBody final CompanyDto companyDto){
-      companyEntity company=CompanyServices.addCompany(companyEntity.from(companyDto));
+        companyEntity company=companyServices.addCompany(companyEntity.from(companyDto));
       return  new ResponseEntity<>(CompanyDto.from(company), HttpStatus.OK);
    }
 
    @GetMapping
     public ResponseEntity<List<CompanyDto>> getCompanies(){
-        List<companyEntity> companyEntities= companyServices.getCompany();
-        List<CompanyDto> companyDto= companyEntities.stream().map(CompanyDto::from).collect(Collectors.toList());
+        List<companyEntity> companyEntities= companyServices.getCompanies();
+        List<CompanyDto> companyDto= companyEntities.stream().map(CompanyDto::from)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(companyDto,HttpStatus.OK);
    }
    @GetMapping(value = "{id}")

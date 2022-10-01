@@ -3,10 +3,7 @@ package com.sajdaalavad.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sajdaalavad.business.dto.CompanyDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,15 +11,12 @@ import java.util.List;
 
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "company")
 public class companyEntity{
    // @Id
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long comid;
 
     @Column(name = "company_name")
@@ -31,7 +25,8 @@ public class companyEntity{
 
     @Column(name = "employee_entities")
     @JsonIgnore
-    @OneToMany(targetEntity = EmployeeEntity.class,cascade = CascadeType.ALL)
+    @OneToMany(/*targetEntity = EmployeeEntity.class,*/
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "cp_fk",referencedColumnName = "comid")
     private List<EmployeeEntity> employeeEntities= new ArrayList<>();
 
